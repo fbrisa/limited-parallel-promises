@@ -1,33 +1,36 @@
 var lpp=require("./lpp")
 
+
+
 var  numbersToGenerate = 20;
-var examples=[];
+var listOfArguments=[];
 while ((numbersToGenerate--)>0) {
-    examples.push(parseInt(Math.random()*2000,10));
+    listOfArguments.push(parseInt(Math.random()*2000,10));
 }
 
-// generator function
-var generatorFunction = function() {
-    if (examples.length===0) {return null;}
 
+
+var myAsyncFunction = function(delay) {
     return new Promise((resolve, reject) => {
-        var delay=examples.shift();
         console.log(`start delay: ${delay}`)
         setTimeout(()=> {
             console.log(delay);
             resolve(delay);
-        },delay*2)
+        },delay)
     });
-}
+};
 
 // giving the generator function to the library
-lpp(generatorFunction).then(res => {
+lpp.setUp(myAsyncFunction,listOfArguments).lpp(5).then(res => {
     console.log("end");
     console.log(res.join(","));
 });
-// lpp(generatorFunction,3,(meanwhile => {
-//     console.log(`meanwhile: ${meanwhile}`)
-// })).then(res => {
+
+// or you can run it like this
+// lpp.lpp(3,() => {
+//     if (listOfArguments.length===0) {return null;}
+//     return myAsyncFunction(listOfArguments.shift());
+// }).then(res => {
 //     console.log("end");
 //     console.log(res.join(","));
-// })
+// });
