@@ -5,7 +5,7 @@ var lpp=require("./lpp")
 var  numbersToGenerate = 20;
 var listOfArguments=[];
 while ((numbersToGenerate--)>0) {
-    listOfArguments.push(parseInt(Math.random()*2000,10));
+    listOfArguments.push(1+parseInt(Math.random()*20,10));
 }
 
 

@@ -32,7 +32,7 @@ module.exports = {
                         resolvedValues.push(res);
                         runningCount--;
                         nextP(generatorFunction);
-                    })
+                    }).catch(err => reject(err))
                 } else {
                     if (runningCount==0) {
                         resolve(resolvedValues);
