@@ -1,5 +1,6 @@
 module.exports = {
 
+    pos:0,
     arrayOfArguments:[],
     myAsyncFunction:[],
     setUp(myAsyncFunction,arrayOfArguments) {
@@ -8,11 +9,14 @@ module.exports = {
         return this;
     },
     generatorFunction() {
-        if (module.exports.arrayOfArguments.length===0) {return null;}
-        return module.exports.myAsyncFunction(module.exports.arrayOfArguments.shift())
+        if (module.exports.pos<module.exports.arrayOfArguments.length) {
+            return module.exports.myAsyncFunction(module.exports.arrayOfArguments[module.exports.pos++]);
+        }
+        return null;
     },
 
     lpp(max,generatorFunction) {
+        module.exports.pos=0;
         if (max===undefined) {
             max=10;
         }
@@ -37,11 +41,14 @@ module.exports = {
                     if (runningCount==0) {
                         resolve(resolvedValues);
                     }
-                }    
+                }
+                
+                return maybePromise;
             }
 
-            while (runningCount<max) {
-                nextP(generatorFunction);
+            var goon=true;
+            while (runningCount<max && goon) {
+                goon=(nextP(generatorFunction)!==null);
             }
             
         });
